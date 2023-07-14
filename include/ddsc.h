@@ -1,10 +1,9 @@
-
 /*DDS 接口*/
 
 #ifndef __DDS_C_INTERFACE_H__
 #define __DDS_C_INTERFACE_H__
-#include "dds_c_define.h"
-#include "dds_c_qos.h"
+#include "ddsdefine.h"
+#include "ddsqos.h"
 
 #ifdef __cplusplus
 extern "C"

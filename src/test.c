@@ -2,10 +2,10 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "dds_c_interface.h"
+#include "ddsc.h"
 #include <signal.h>
 #include <pthread.h>
-#include "ddsoptionalparse.h"
+#include "ddsexampleoptparse.h"
 
 static dds_fd dds;
 
