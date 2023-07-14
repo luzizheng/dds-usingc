@@ -39,8 +39,10 @@ void *runSendThread(void *arg)
         printf("error:OptionsArgs is null\n");
         pthread_exit(NULL);
     }
-    const char *message = "hello dds";
-    void *p = (void *)message;
+    // const char *message = "abcdefg";
+    // void *p = (void *)message;
+    char *msg = malloc(strlen(targs->message) + 1);
+    strcpy(msg,targs->message);
 
     uint32_t remain_samples = targs->samples;
     while (1)
@@ -60,12 +62,13 @@ void *runSendThread(void *arg)
         const char *topic_str = topic_ch;
 
         // send data
-        DDS_MSGCODE code = dds_send(dds, topic_str, p, strlen(message), true);
+        DDS_MSGCODE code = dds_send(dds, topic_str, msg, strlen(msg), true);
         if (code != DDS_MSG_SUCCESS)
         {
             break;
         }
     }
+    free(msg);
     pthread_exit(NULL);
 }
 
@@ -95,20 +98,33 @@ void *listenThread(void *arg)
 void *readThread(void *arg)
 {
     struct OptionsArgs *targs = (struct OptionsArgs *)arg;
-    void *pdata = NULL;
-    uint32_t dataLen;
+    void *pdata;
+    uint32_t dataLen = 0;
     char topic_ch[10];
     sprintf(topic_ch, "%d", targs->topic);
     const char *topic_str = topic_ch;
-    if (dds_read(dds, topic_str, pdata, &dataLen) == DDS_MSG_SUCCESS)
+    if (dds_read(dds, topic_str, 5, &pdata, &dataLen) == DDS_MSG_SUCCESS)
     {
-        char *str = (char *)malloc(dataLen + 1);
-        memcpy(str, pdata, dataLen);
-        str[dataLen] = '\0';
-        printf("接收到数据:%s\n", str);
-        free(str);
+        // printf("pdata = %p\n",pdata);
+        // char *str = (char *)malloc(dataLen + 1);
+        // memcpy(str, pdata, dataLen);
+        // str[dataLen] = '\0';
+        // printf("接收到数据:%s\n", str);
+        // free(str);
+        char *recvMsg = (char *)pdata;
+        printf("接收到数据:");
+        for (int i = 0; i < dataLen; i++)
+        {
+            printf("%c",recvMsg[i]);
+        }
+        putchar('\n');
+        free(recvMsg);
     }
-    return NULL;
+    else
+    {
+        printf("dds_read方法error");
+    }
+    pthread_exit(NULL);
 }
 
 int main(int argc, char **argv)

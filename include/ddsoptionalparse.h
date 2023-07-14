@@ -25,6 +25,7 @@ struct OptionsArgs
     uint32_t samples;
     double interval_u;
     uint32_t topic;
+    char message[20];
 };
 
 

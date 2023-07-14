@@ -21,6 +21,7 @@ extern "C"
 #define DDS_MSG_DATAERR 0xe008
 
 #define DDS_MSG_OTHERERR 0xfe01
+#define DDS_MSG_PARAMSERR 0xfe02
 
 #define DDSSERIDLEN 8
 #define DDSSERNAMELEN 20
